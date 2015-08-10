@@ -12,8 +12,10 @@ angular.module('ngsoundcloudApp')
     // Public API here
     return {
       add: function (track, callback) {
-        playlist.push(track);
         var cb = callback || angular.noop;
+
+        playlist.push(track);
+
         $http.post('/api/users/playlist/save', {
           playlist: playlist
         }).
@@ -26,6 +28,12 @@ angular.module('ngsoundcloudApp')
       },
       all: function() {
         return playlist;
+      },
+      setPlaylist: function(newPlaylist) {
+        playlist = newPlaylist;
+      },
+      clearPlaylist: function() {
+        playlist = [];
       },
       playTrack: function(track) {
 
@@ -52,25 +60,14 @@ angular.module('ngsoundcloudApp')
               var nextIndex = playlist.indexOf(track) + 1;
               if (nextIndex < playlist.length) {
                 track = playlist[nextIndex];
-                me.playTrack(track);
+              } else {
+                track = playlist[0];
               }
-
+              me.playTrack(track);
             });
           });
 
         },2000);
-      },
-      savePlaylist: function(callback) {
-        var cb = callback || angular.noop;
-        $http.post('/api/users/playlist/save', {
-         playlist: playlist
-        }).
-          success(function(response) {
-            cb(false, response);
-          }).
-          error(function(err) {
-            cb(err, false);
-          });
       }
     };
   });

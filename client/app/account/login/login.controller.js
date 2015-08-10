@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngsoundcloudApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location) {
+  .controller('LoginCtrl', function ($scope, Auth, $location, Playlist) {
     $scope.user = {};
     $scope.errors = {};
 

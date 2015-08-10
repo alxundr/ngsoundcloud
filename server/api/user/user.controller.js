@@ -97,7 +97,7 @@ exports.savePlaylist = function(req, res, next) {
   var userId = req.user._id;
   var playlist = req.body.playlist;
   User.findById(userId, function(err, user) {
-    user.playlist = user.playlist.concat(playlist);
+    user.playlist = playlist;
     user.save(function(err) {
       if (err) return validationError(res, err);
       res.status(200).send('OK');

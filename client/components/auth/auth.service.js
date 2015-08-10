@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngsoundcloudApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q, Playlist) {
     var currentUser = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
@@ -26,9 +26,11 @@ angular.module('ngsoundcloudApp')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
+          currentUser = User.get(function(user) {
+            Playlist.setPlaylist(user.playlist);
+            deferred.resolve();
+            return cb();
+          });
         }).
         error(function(err) {
           this.logout();
@@ -47,6 +49,7 @@ angular.module('ngsoundcloudApp')
       logout: function() {
         $cookieStore.remove('token');
         currentUser = {};
+        Playlist.clearPlaylist();
       },
 
       /**
