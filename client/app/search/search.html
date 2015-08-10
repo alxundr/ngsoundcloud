@@ -1,0 +1,41 @@
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <form class="form" ng-submit="search()">
+        <div class="input-group" id="search-input">
+          <input type="text"
+                 class="form-control"
+                 ng-model="options.q"
+                 placeholder="search"
+                 aria-describedby="basic-addon"
+                 required>
+          <span class="input-group-addon" id="basic-addon"><i class="glyphicon glyphicon-search"></i></span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table" ng-show="tracks">
+      <thead>
+        <tr>
+          <th class="col-sm-7">Track</th>
+          <th class="col-sm-3">User</th>
+          <th class="col-sm-1 text-right">Length</th>
+          <th class="col-sm-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="track in tracks">
+          <td>{{track.title}}</td>
+          <td>{{track.user.username}}</td>
+          <td class="text-right">{{track.duration}}</td>
+          <td class="text-right"><button class="btn btn-default" ng-click="addToPlaylist(track)">Add</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
