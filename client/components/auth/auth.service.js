@@ -27,7 +27,7 @@ angular.module('ngsoundcloudApp')
         success(function(data) {
           $cookieStore.put('token', data.token);
           currentUser = User.get(function(user) {
-            Playlist.setPlaylist(user.playlist);
+            Playlist.setCurrentUser(user);
             deferred.resolve();
             return cb();
           });
@@ -119,11 +119,13 @@ angular.module('ngsoundcloudApp')
       isLoggedInAsync: function(cb) {
         if(currentUser.hasOwnProperty('$promise')) {
           currentUser.$promise.then(function() {
+            Playlist.setCurrentUser(currentUser);
             cb(true);
           }).catch(function() {
             cb(false);
           });
         } else if(currentUser.hasOwnProperty('role')) {
+          Playlist.setCurrentUser(currentUser);
           cb(true);
         } else {
           cb(false);

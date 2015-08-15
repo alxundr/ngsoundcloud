@@ -8,6 +8,7 @@ angular.module('ngsoundcloudApp')
     var playlist = [];
     var query = "";
     var queryResults = [];
+    var currentUser = {};
 
     // Public API here
     return {
@@ -16,7 +17,7 @@ angular.module('ngsoundcloudApp')
 
         playlist.push(track);
 
-        $http.post('/api/users/playlist/save', {
+        $http.post('/api/users/' + currentUser._id + '/playlist/', {
           playlist: playlist
         }).
           success(function(response) {
@@ -28,6 +29,10 @@ angular.module('ngsoundcloudApp')
       },
       all: function() {
         return playlist;
+      },
+      setCurrentUser: function(user) {
+        currentUser = user;
+        playlist = user.playlist;
       },
       setPlaylist: function(newPlaylist) {
         playlist = newPlaylist;

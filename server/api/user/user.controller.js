@@ -59,7 +59,7 @@ exports.destroy = function(req, res) {
 };
 
 /**
- * Change a users password
+ * Change a users passwordu
  */
 exports.changePassword = function(req, res, next) {
   var userId = req.user._id;
@@ -104,6 +104,10 @@ exports.savePlaylist = function(req, res, next) {
     });
   });
 };
+
+exports.getPlaylist = function(req, res, next) {
+
+}
 
 /**
  * Authentication callback

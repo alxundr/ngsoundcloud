@@ -21,7 +21,7 @@ exports.index = function(req, res) {
             duration: util.convertMS(track.duration),
             permalink_url: track.permalink_url,
             title: track.title,
-            user: track.user
+            username: track.user.username
           });
           if (index + 1 == tracks.length) {
             res.json({
