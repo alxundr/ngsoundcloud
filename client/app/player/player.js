@@ -3,9 +3,9 @@
 angular.module('ngsoundcloudApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('main', {
+      .state('player', {
         url: '/',
-        templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'app/player/player.html',
+        controller: 'PlayerCtrl'
       });
   });

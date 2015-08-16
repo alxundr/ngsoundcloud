@@ -1,0 +1,33 @@
+
+<div class="container">
+  <div class="row">
+    <alert type="{{alert.type}}" ng-show="alert.show" close="alert.show=false">
+      {{alert.message}}
+    </alert>
+    <div class="col-sm-12">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th class="col-sm-6">Track</th>
+          <th class="col-sm-3">User</th>
+          <th class="col-sm-1 text-right">Length</th>
+          <th class="col-sm-2"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="track in playlist" ng-class="{'danger': isPlaying(track)}">
+          <td>{{track.title}}</td>
+          <td>{{track.username}}</td>
+          <td class="text-right">{{track.duration}}</td>
+          <td class="text-center">
+            <button class="btn btn-default" ng-click="play(track)"><i class="glyphicon glyphicon-play"></i></button>
+            <button class="btn btn-default" ng-click="remove(track)"><i class="glyphicon glyphicon-trash"></i></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

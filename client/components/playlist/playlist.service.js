@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngsoundcloudApp')
-  .factory('Playlist', function ($http) {
+  .factory('Playlist', function ($http, $rootScope) {
     // Service logic
     // ...
 
@@ -14,9 +14,7 @@ angular.module('ngsoundcloudApp')
     return {
       add: function (track, callback) {
         var cb = callback || angular.noop;
-
         playlist.push(track);
-
         $http.post('/api/users/' + currentUser._id + '/playlist/', {
           playlist: playlist
         }).
@@ -40,10 +38,28 @@ angular.module('ngsoundcloudApp')
       clearPlaylist: function() {
         playlist = [];
       },
+      remove: function(track, callback) {
+        var cb = callback || angular.noop;
+        var tempPlaylist = angular.copy(playlist);
+        tempPlaylist.splice(tempPlaylist.indexOf(track), 1);
+        $http.post('/api/users/' + currentUser._id + '/playlist/', {
+          playlist: tempPlaylist
+        }).
+          success(function(response) {
+            playlist.splice(playlist.indexOf(track), 1);
+            cb(false, response);
+          }).
+          error(function(err) {
+            cb(err, false);
+          });
+      },
       playTrack: function(track) {
 
         var me = this;
-
+        $rootScope.currentTrack = track;
+        try {
+          $rootScope.$digest();
+        } catch(e) {}
         window.SC.oEmbed(track.permalink_url, {
           auto_play: true,
           buying: false,
@@ -60,8 +76,6 @@ angular.module('ngsoundcloudApp')
 
           widget.bind(window.SC.Widget.Events.READY, function() {
             widget.bind(window.SC.Widget.Events.FINISH, function() {
-              console.log('track finished');
-
               var nextIndex = playlist.indexOf(track) + 1;
               if (nextIndex < playlist.length) {
                 track = playlist[nextIndex];
