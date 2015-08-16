@@ -32,7 +32,7 @@
       <tbody>
         <tr ng-repeat="track in tracks">
           <td>{{track.title}}</td>
-          <td>{{track.user.username}}</td>
+          <td>{{track.username}}</td>
           <td class="text-right">{{track.duration}}</td>
           <td class="text-right"><button class="btn btn-default" ng-click="addToPlaylist(track)">Add</button></td>
         </tr>

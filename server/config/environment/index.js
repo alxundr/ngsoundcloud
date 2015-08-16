@@ -19,7 +19,7 @@ var all = {
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 9000,
+  port: process.env.PORT,
 
   // Server IP
   ip: process.env.IP || 'localhost',
@@ -42,11 +42,6 @@ var all = {
         safe: true
       }
     }
-  },
-
-  soundcloud: {
-    id: '6c6a48a95b3175e4270cfa0027d7d3ca',
-    secret: '7d0396bdb0de05310f1882bbddfc96ab'
   }
 
 };

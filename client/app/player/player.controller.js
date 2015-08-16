@@ -13,6 +13,14 @@ angular.module('ngsoundcloudApp')
       $scope.currentTrack = track;
     });
 
+    $scope.sortableOptions = {
+      update: function(event, ui) {
+        Playlist.saveAlteredPlaylist($scope.playlist, function(err, response) {
+          if (err) $scope.playlist = Playlist.all();
+        });
+      }
+    };
+
     $scope.play = function(track) {
       Playlist.playTrack(track);
     };

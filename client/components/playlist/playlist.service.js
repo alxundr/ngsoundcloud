@@ -38,6 +38,19 @@ angular.module('ngsoundcloudApp')
       clearPlaylist: function() {
         playlist = [];
       },
+      saveAlteredPlaylist: function(altPlaylist, callback) {
+        var cb = callback || angular.noop;
+        $http.post('/api/users/' + currentUser._id + '/playlist/', {
+          playlist: altPlaylist
+        }).
+          success(function(response) {
+            playlist = altPlaylist;
+            cb(false, response);
+          }).
+          error(function(err) {
+            cb(err, false);
+          });
+      },
       remove: function(track, callback) {
         var cb = callback || angular.noop;
         var tempPlaylist = angular.copy(playlist);

@@ -5,7 +5,8 @@ angular.module('ngsoundcloudApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ui.sortable'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
@@ -35,6 +36,7 @@ angular.module('ngsoundcloudApp', [
           return $q.reject(response);
         }
         else {
+          console.log("other response", response);
           return $q.reject(response);
         }
       }

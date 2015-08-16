@@ -104,6 +104,10 @@ angular.module('ngsoundcloudApp')
         return currentUser;
       },
 
+      clearCurrentUser: function() {
+        currentUser = {};
+      },
+
       /**
        * Check if a user is logged in
        *
