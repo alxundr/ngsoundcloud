@@ -12,7 +12,6 @@ angular.module('ngsoundcloudApp')
     $scope.getCurrentUser = Auth.getCurrentUser;
 
     $scope.isActive = function(userId) {
-      console.log('userId', userId, 'location', $location.path());
       return '/people/' + userId === $location.path();
     }
 
