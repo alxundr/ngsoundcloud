@@ -100,6 +100,16 @@ angular.module('ngsoundcloudApp')
           });
 
         },2000);
+      },
+      getOtherUserPlaylist: function(userId, callback) {
+        var cb = callback || angular.noop;
+        $http.get('/api/users/' + userId+ '/playlist/').
+          success(function(playlist) {
+            cb(false, playlist)
+          }).
+          error(function(err) {
+            cb(err, false);
+          });
       }
     };
   });

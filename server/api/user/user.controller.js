@@ -14,7 +14,7 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.index = function(req, res) {
-  User.find({}, '-salt -hashedPassword', function (err, users) {
+  User.find({}, '-salt -hashedPassword -playlist', function (err, users) {
     if(err) return res.status(500).send(err);
     res.status(200).json(users);
   });
@@ -107,8 +107,13 @@ exports.savePlaylist = function(req, res, next) {
 };
 
 exports.getPlaylist = function(req, res, next) {
-
-}
+  var userId = req.params.id;
+  User.findById(userId, function(err, user) {
+    if (err) return next(err);
+    if (!user) return res.status(401).send('Unauthorized');
+    res.json(user.playlist);
+  });
+};
 
 /**
  * Authentication callback

@@ -38,6 +38,10 @@
     padding: 0.2em 0;
 }
 
+body {
+  padding-top: 50px;
+}
+
 .footer {
   text-align: center;
   padding: 30px 0;
@@ -70,6 +74,9 @@
 #custom-bootstrap-menu.navbar-default .navbar-text{
   color: #ecf0f1;
   background-color: rgba(248, 248, 248, 0);
+}
+#custom-bootstrap-menu.navbar-default .playing {
+  color: #d3d3d3;
 }
 #custom-bootstrap-menu.navbar-default .navbar-nav>li>a:hover,
 #custom-bootstrap-menu.navbar-default .navbar-nav>li>a:focus {

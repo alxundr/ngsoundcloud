@@ -1,0 +1,29 @@
+<div class="row">
+  <alert type="{{alert.type}}" ng-show="alert.show" close="alert.show=false">
+    {{alert.message}}
+  </alert>
+</div>
+
+<div class="row">
+  <table class="table" ng-show="tracks">
+    <thead>
+    <tr>
+      <th class="col-sm-6">Track</th>
+      <th class="col-sm-3">User</th>
+      <th class="col-sm-1 text-right">Length</th>
+      <th class="col-sm-2"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="track in tracks">
+      <td>{{track.title}}</td>
+      <td>{{track.username}}</td>
+      <td class="text-right">{{track.duration}}</td>
+      <td class="text-right">
+        <button class="btn btn-default" ng-click="addToPlaylist(track)">Add</button>
+        <button class="btn btn-default" ng-click="addAndPlay(track)"><i class="glyphicon glyphicon-play"></i></button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

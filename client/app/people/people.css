@@ -1,0 +1,6 @@
+a.list-group-item.active,
+a.list-group-item.active:hover,
+a.list-group-item.active:focus {
+  background-color: rgba(255, 78, 0, 1);
+  border-color: #f76423;
+}

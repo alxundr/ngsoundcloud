@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngsoundcloudApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarCtrl', function ($scope, $location, Auth, $rootScope) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -11,6 +11,13 @@ angular.module('ngsoundcloudApp')
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.currentTrack = $rootScope.currentTrack;
+
+    $rootScope.$watch(function($rootScope) {
+      return $rootScope.currentTrack;
+    }, function(track) {
+      $scope.currentTrack = track;
+    });
 
     $scope.logout = function() {
       Auth.logout();

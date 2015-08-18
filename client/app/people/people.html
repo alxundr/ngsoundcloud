@@ -1,0 +1,26 @@
+
+<div class="container">
+  <div class="list-group col-sm-4">
+    <form class="form" ng-submit="search()">
+      <div class="input-group" id="search-input">
+        <input type="text"
+               class="form-control"
+               ng-model="search.$"
+               placeholder="search"
+               aria-describedby="basic-addon"
+               required>
+        <span class="input-group-addon" id="basic-addon"><i class="glyphicon glyphicon-search"></i></span>
+      </div>
+    </form>
+    <a class="list-group-item"
+       ng-repeat="user in users | filter:search"
+       ng-if="getCurrentUser()._id!==user._id"
+       ng-class="{active: isActive(user._id)}"
+       ng-href="people/{{user._id}}">
+      <strong>{{user.name}}</strong>
+      <br>
+      <span>{{user.email}}</span>
+    </a>
+  </div>
+  <div ui-view class="col-sm-8"></div>
+</div>
