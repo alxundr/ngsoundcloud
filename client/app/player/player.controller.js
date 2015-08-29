@@ -3,7 +3,7 @@
 angular.module('ngsoundcloudApp')
   .controller('PlayerCtrl', function ($rootScope, $scope, Playlist) {
 
-    $scope.playlist = Playlist.all();
+    $scope.tracks = Playlist.all();
     $scope.currentTrack = $rootScope.currentTrack;
     $scope.alert = { show: false};
 
@@ -15,14 +15,15 @@ angular.module('ngsoundcloudApp')
 
     $scope.sortableOptions = {
       update: function(event, ui) {
-        Playlist.saveAlteredPlaylist($scope.playlist, function(err, response) {
-          if (err) $scope.playlist = Playlist.all();
+        Playlist.saveAlteredPlaylist($scope.tracks, function(err, response) {
+          if (err) $scope.tracks = Playlist.all();
         });
       }
     };
 
     $scope.play = function(track) {
-      Playlist.playTrack(track);
+      document.body.style.paddingTop = "236px";
+      Playlist.playTrack(track, $scope.tracks);
     };
 
     $scope.isPlaying = function(track) {

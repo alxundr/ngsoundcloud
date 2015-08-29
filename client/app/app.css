@@ -39,7 +39,7 @@
 }
 
 body {
-  padding-top: 50px;
+  padding-top: 70px;
 }
 
 .footer {
@@ -50,7 +50,7 @@ body {
 }
 
 #player {
-  margin-bottom: 20px;
+  margin-top: 50px;
 }
 
 .nav, .pagination, .carousel, .panel-title a {

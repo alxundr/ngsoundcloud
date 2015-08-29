@@ -38,6 +38,9 @@ angular.module('ngsoundcloudApp')
       clearPlaylist: function() {
         playlist = [];
       },
+      getPlaylist: function() {
+        return playlist;
+      },
       saveAlteredPlaylist: function(altPlaylist, callback) {
         var cb = callback || angular.noop;
         $http.post('/api/users/' + currentUser._id + '/playlist/', {
@@ -66,7 +69,7 @@ angular.module('ngsoundcloudApp')
             cb(err, false);
           });
       },
-      playTrack: function(track) {
+      playTrack: function(track, tracklist) {
 
         var me = this;
         $rootScope.currentTrack = track;
@@ -89,13 +92,13 @@ angular.module('ngsoundcloudApp')
 
           widget.bind(window.SC.Widget.Events.READY, function() {
             widget.bind(window.SC.Widget.Events.FINISH, function() {
-              var nextIndex = playlist.indexOf(track) + 1;
-              if (nextIndex < playlist.length) {
-                track = playlist[nextIndex];
+              var nextIndex = tracklist.indexOf(track) + 1;
+              if (nextIndex < tracklist.length) {
+                track = tracklist[nextIndex];
               } else {
-                track = playlist[0];
+                track = tracklist[0];
               }
-              me.playTrack(track);
+              me.playTrack(track, tracklist);
             });
           });
 

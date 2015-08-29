@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngsoundcloudApp')
-  .controller('SearchCtrl', function ($scope, Auth, $location, Search, Playlist) {
+  .controller('SearchCtrl', function ($scope, Auth, $location, Search, Playlist, $rootScope) {
 
     if (!Auth.isLoggedIn()) {
       $location.path('/login');
@@ -13,6 +13,7 @@ angular.module('ngsoundcloudApp')
 
     $scope.options.q = Search.getQuery();
     $scope.tracks = Search.getQueryResults();
+    $scope.currentTrack = $rootScope.currentTrack;
 
     $scope.search = function() {
       Search.setQuery($scope.options.q);
@@ -44,10 +45,19 @@ angular.module('ngsoundcloudApp')
       });
     };
 
-    $scope.addAndPlay = function(track) {
-      $scope.addToPlaylist(track, function() {
-        Playlist.playTrack(track);
-      });
+    $scope.play = function(track) {
+      document.body.style.paddingTop = "236px";
+      Playlist.playTrack(track, $scope.tracks);
     };
+
+    $scope.isPlaying = function(track) {
+      return $scope.currentTrack == track;
+    };
+
+    $rootScope.$watch(function($rootScope) {
+      return $rootScope.currentTrack;
+    }, function(track) {
+      $scope.currentTrack = track;
+    });
 
   });

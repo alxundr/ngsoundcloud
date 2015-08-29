@@ -30,13 +30,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="track in tracks">
+        <tr ng-repeat="track in tracks" ng-class="{'danger': isPlaying(track)}">
           <td>{{track.title}}</td>
           <td>{{track.username}}</td>
           <td class="text-right">{{track.duration}}</td>
           <td class="text-right">
             <button class="btn btn-default" ng-click="addToPlaylist(track)">Add</button>
-            <button class="btn btn-default" ng-click="addAndPlay(track)"><i class="glyphicon glyphicon-play"></i></button>
+            <button class="btn btn-default" ng-click="play(track)"><i class="glyphicon glyphicon-play"></i></button>
           </td>
         </tr>
       </tbody>

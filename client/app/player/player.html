@@ -14,8 +14,8 @@
           <th class="col-sm-2"></th>
         </tr>
         </thead>
-        <tbody ui-sortable="sortableOptions" ng-model="playlist">
-        <tr ng-repeat="track in playlist" ng-class="{'danger': isPlaying(track)}" style="cursor: move">
+        <tbody ui-sortable="sortableOptions" ng-model="tracks">
+        <tr ng-repeat="track in tracks" ng-class="{'danger': isPlaying(track)}" style="cursor: move">
           <td>{{track.title}}</td>
           <td>{{track.username}}</td>
           <td class="text-right">{{track.duration}}</td>
