@@ -29,10 +29,15 @@ angular.module('ngsoundcloudApp', [
 
       // Intercept 401s and redirect you to login
       responseError: function(response) {
-        if(response.status === 401) {
-          $location.path('/login');
+        
+        if(response.status === 401) {          
+          if($location.path() != "/search") {
+            $location.path('/login');
+          }
           // remove any stale tokens
           $cookieStore.remove('token');
+          $rootScope.currentUser = null;
+          $rootScope.playlist = [];
           return $q.reject(response);
         }
         else {
@@ -44,14 +49,17 @@ angular.module('ngsoundcloudApp', [
   })
 
   .run(function ($rootScope, $location, Auth) {
+
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
-      Auth.isLoggedInAsync(function(loggedIn) {
-        if (next.authenticate && !loggedIn) {
-          event.preventDefault();
-          $location.path('/login');
-        }
-      });
+
+      Auth.isLoggedInAsync().
+        catch(function() {
+          if($location.path() != "/search") {
+            event.preventDefault();
+            $location.path('/login');
+          }
+        });
     });
 
   });

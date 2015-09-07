@@ -5,18 +5,19 @@ angular.module('ngsoundcloudApp')
     // Service logic
     // ...
 
-    var playlist = [];
     var query = "";
     var queryResults = [];
     var currentUser = {};
+
+    $rootScope.playlist = [];
 
     // Public API here
     return {
       add: function (track, callback) {
         var cb = callback || angular.noop;
-        playlist.push(track);
+        $rootScope.playlist.push(track);
         $http.post('/api/users/' + currentUser._id + '/playlist/', {
-          playlist: playlist
+          playlist: $rootScope.playlist
         }).
           success(function(response) {
             cb(false, response);
@@ -25,21 +26,18 @@ angular.module('ngsoundcloudApp')
             cb(err, false);
           });
       },
-      all: function() {
-        return playlist;
-      },
       setCurrentUser: function(user) {
         currentUser = user;
-        playlist = user.playlist;
+        $rootScope.playlist = user.playlist;
       },
       setPlaylist: function(newPlaylist) {
-        playlist = newPlaylist;
+        $rootScope.playlist = newPlaylist;
       },
       clearPlaylist: function() {
-        playlist = [];
+        $rootScope.playlist = [];
       },
       getPlaylist: function() {
-        return playlist;
+        return $rootScope.playlist;
       },
       saveAlteredPlaylist: function(altPlaylist, callback) {
         var cb = callback || angular.noop;
@@ -47,7 +45,7 @@ angular.module('ngsoundcloudApp')
           playlist: altPlaylist
         }).
           success(function(response) {
-            playlist = altPlaylist;
+            $rootScope.playlist = altPlaylist;
             cb(false, response);
           }).
           error(function(err) {
@@ -56,13 +54,13 @@ angular.module('ngsoundcloudApp')
       },
       remove: function(track, callback) {
         var cb = callback || angular.noop;
-        var tempPlaylist = angular.copy(playlist);
+        var tempPlaylist = angular.copy($rootScope.playlist);
         tempPlaylist.splice(tempPlaylist.indexOf(track), 1);
         $http.post('/api/users/' + currentUser._id + '/playlist/', {
           playlist: tempPlaylist
         }).
           success(function(response) {
-            playlist.splice(playlist.indexOf(track), 1);
+            $rootScope.playlist.splice($rootScope.playlist.indexOf(track), 1);
             cb(false, response);
           }).
           error(function(err) {

@@ -2,9 +2,13 @@
 
 angular.module('ngsoundcloudApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q, Playlist) {
-    var currentUser = {};
+
     if($cookieStore.get('token')) {
-      currentUser = User.get();
+      $rootScope.currentUser = User.get(function(user) {
+        Playlist.setCurrentUser(user);
+      });
+    } else {
+      
     }
 
     return {
@@ -16,8 +20,7 @@ angular.module('ngsoundcloudApp')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      login: function(user, callback) {
-        var cb = callback || angular.noop;
+      login: function(user) {
         var deferred = $q.defer();
 
         $http.post('/auth/local', {
@@ -25,17 +28,15 @@ angular.module('ngsoundcloudApp')
           password: user.password
         }).
         success(function(data) {
-          $cookieStore.put('token', data.token);
-          currentUser = User.get(function(user) {
-            Playlist.setCurrentUser(user);
-            deferred.resolve();
-            return cb();
+          $cookieStore.put('token', data.token);          
+          $rootScope.currentUser = User.get(function(user) {
+              Playlist.setCurrentUser(user);
+              deferred.resolve();
           });
         }).
         error(function(err) {
           this.logout();
           deferred.reject(err);
-          return cb(err);
         }.bind(this));
 
         return deferred.promise;
@@ -48,7 +49,7 @@ angular.module('ngsoundcloudApp')
        */
       logout: function() {
         $cookieStore.remove('token');
-        currentUser = {};
+        $rootScope.currentUser = null;
         Playlist.clearPlaylist();
       },
 
@@ -65,7 +66,7 @@ angular.module('ngsoundcloudApp')
         return User.save(user,
           function(data) {
             $cookieStore.put('token', data.token);
-            currentUser = User.get();
+            $rootScope.currentUser = User.get();
             return cb(user);
           },
           function(err) {
@@ -101,11 +102,13 @@ angular.module('ngsoundcloudApp')
        * @return {Object} user
        */
       getCurrentUser: function() {
-        return currentUser;
+        return $rootScope.currentUser;
       },
 
       clearCurrentUser: function() {
-        currentUser = {};
+        $rootScope.currentUser = null;
+        Playlist.clearPlaylist();
+        $location.path('/login');
       },
 
       /**
@@ -114,26 +117,28 @@ angular.module('ngsoundcloudApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+        if (!$rootScope.currentUser) {
+          return false;
+        } else {
+          return $rootScope.currentUser.hasOwnProperty('role');
+        }
       },
 
       /**
        * Waits for currentUser to resolve before checking if user is logged in
        */
-      isLoggedInAsync: function(cb) {
-        if(currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
-            Playlist.setCurrentUser(currentUser);
-            cb(true);
-          }).catch(function() {
-            cb(false);
-          });
-        } else if(currentUser.hasOwnProperty('role')) {
-          Playlist.setCurrentUser(currentUser);
-          cb(true);
+      isLoggedInAsync: function() {
+        var deferred = $q.defer();
+        if (!$rootScope.currentUser) {
+          Playlist.clearPlaylist();
+          deferred.reject();
         } else {
-          cb(false);
+          $rootScope.currentUser = User.get(function(user) {
+            deferred.resolve();
+          });
+
         }
+        return deferred.promise;
       },
 
       /**
@@ -142,7 +147,11 @@ angular.module('ngsoundcloudApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return currentUser.role === 'admin';
+        if (!$rootScope.currentUser) {
+          return false
+        } else {
+          return $rootScope.currentUser.role === 'admin';  
+        }        
       },
 
       /**

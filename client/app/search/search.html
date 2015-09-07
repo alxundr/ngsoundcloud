@@ -35,7 +35,7 @@
           <td>{{track.username}}</td>
           <td class="text-right">{{track.duration}}</td>
           <td class="text-right">
-            <button class="btn btn-default" ng-click="addToPlaylist(track)">Add</button>
+            <button ng-show="isLoggedIn()" class="btn btn-default" ng-click="addToPlaylist(track)">Add</button>
             <button class="btn btn-default" ng-click="play(track)"><i class="glyphicon glyphicon-play"></i></button>
           </td>
         </tr>

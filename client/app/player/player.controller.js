@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('ngsoundcloudApp')
-  .controller('PlayerCtrl', function ($rootScope, $scope, Playlist) {
+  .controller('PlayerCtrl', function ($rootScope, $scope, Playlist, Auth) {
 
-    $scope.tracks = Playlist.all();
+    $scope.tracks = Playlist.getPlaylist();
     $scope.currentTrack = $rootScope.currentTrack;
     $scope.alert = { show: false};
 
@@ -22,8 +22,13 @@ angular.module('ngsoundcloudApp')
     };
 
     $scope.play = function(track) {
-      document.body.style.paddingTop = "236px";
-      Playlist.playTrack(track, $scope.tracks);
+      if (Auth.isLoggedIn()) {
+        document.body.style.paddingTop = "236px";
+        Playlist.playTrack(track, $scope.tracks);  
+      } else {
+        Auth.clearCurrentUser();
+      }
+      
     };
 
     $scope.isPlaying = function(track) {
@@ -36,7 +41,7 @@ angular.module('ngsoundcloudApp')
           $scope.alert.type = "danger";
           $scope.alert.message = err;
           $scope.alert.show = true;
-        }
+        } 
       })
     };
 

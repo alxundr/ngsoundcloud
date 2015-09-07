@@ -3,10 +3,6 @@
 angular.module('ngsoundcloudApp')
   .controller('SearchCtrl', function ($scope, Auth, $location, Search, Playlist, $rootScope) {
 
-    if (!Auth.isLoggedIn()) {
-      $location.path('/login');
-    }
-
     $scope.options = {};
 
     $scope.alert = { show: false};
@@ -14,6 +10,7 @@ angular.module('ngsoundcloudApp')
     $scope.options.q = Search.getQuery();
     $scope.tracks = Search.getQueryResults();
     $scope.currentTrack = $rootScope.currentTrack;
+    $scope.isLoggedIn = Auth.isLoggedIn;
 
     $scope.search = function() {
       Search.setQuery($scope.options.q);
